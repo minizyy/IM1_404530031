@@ -42,8 +42,7 @@ static char *intTypeNames[] = { "timer", "disk", "console write",
 //	"kind" is the hardware device that generated the interrupt
 //----------------------------------------------------------------------
 
-PendingInterrupt::PendingInterrupt(CallBackObj *callOnInt,
-					int time, IntType kind)
+PendingInterrupt::PendingInterrupt(CallBackObj *callOnInt, int time, IntType kind)
 {
     callOnInterrupt = callOnInt;
     when = time;
@@ -54,9 +53,7 @@ PendingInterrupt::PendingInterrupt(CallBackObj *callOnInt,
 // PendingCompare
 //	Compare to interrupts based on which should occur first.
 //----------------------------------------------------------------------
-
-static int
-PendingCompare (PendingInterrupt *x, PendingInterrupt *y)
+static int PendingCompare (PendingInterrupt *x, PendingInterrupt *y)
 {
     if (x->when < y->when) { return -1; }
     else if (x->when > y->when) { return 1; }
@@ -86,9 +83,7 @@ Interrupt::Interrupt()
 
 Interrupt::~Interrupt()
 {
-    while (!pending->IsEmpty()) {
-	delete pending->RemoveFront();
-    }
+    while (!pending->IsEmpty()) { delete pending->RemoveFront(); }
     delete pending;
 }
 
@@ -102,9 +97,7 @@ Interrupt::~Interrupt()
 //	"old" -- the old interrupt status
 //	"now" -- the new interrupt status
 //----------------------------------------------------------------------
-
-void
-Interrupt::ChangeLevel(IntStatus old, IntStatus now)
+void Interrupt::ChangeLevel(IntStatus old, IntStatus now)
 {
     level = now;
     DEBUG(dbgInt, "\tinterrupts: " << intLevelNames[old] << " -> " << intLevelNames[now]);
@@ -114,15 +107,12 @@ Interrupt::ChangeLevel(IntStatus old, IntStatus now)
 // Interrupt::SetLevel
 // 	Change interrupts to be enabled or disabled, and if interrupts
 //	are being enabled, advance simulated time by calling OneTick().
-//
 // Returns:
 //	The old interrupt status.
 // Parameters:
 //	"now" -- the new interrupt status
 //----------------------------------------------------------------------
-
-IntStatus
-Interrupt::SetLevel(IntStatus now)
+IntStatus Interrupt::SetLevel(IntStatus now)
 {
     IntStatus old = level;
 
